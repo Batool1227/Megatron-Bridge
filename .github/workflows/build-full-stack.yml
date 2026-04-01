@@ -7,44 +7,8 @@ on:
       - main
 
 jobs:
-  build-fw-base:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          submodules: recursive
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build and push fw-base
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: docker/Dockerfile.fw_base
-          target: nemo_fw_base_final
-          push: true
-          build-args: |
-            FW_DEP_BUILDER=base
-            FW_BASE_FINAL=fw_toolkit_builder
-            NEMO_FW_BASE_IMAGE=nvcr.io/nvidia/pytorch:26.02-py3
-          tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/fw-base:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/fw-base:${{ github.sha }}
-
   build-megatron-bridge:
     runs-on: self-hosted
-    needs: build-fw-base
     permissions:
       contents: read
 
