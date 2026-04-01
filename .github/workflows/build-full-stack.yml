@@ -43,7 +43,7 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/fw-base:${{ github.sha }}
 
   build-megatron-bridge:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: build-fw-base
     permissions:
       contents: read
@@ -77,7 +77,7 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/megatron-bridge:${{ github.sha }}
 
   build-fw-final:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: build-megatron-bridge
     permissions:
       contents: read
